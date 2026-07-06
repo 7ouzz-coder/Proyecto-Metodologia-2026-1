@@ -3,6 +3,7 @@ import {
   registrarResultadoService,
   obtenerExamenesService,
   obtenerHistorialAlumnoService,
+  obtenerExamenPorIdService,
 } from "../services/examen.service.js";
 import {
   handleSuccess,
@@ -18,18 +19,25 @@ const CLIENT_ERROR_KEYWORDS = [
   "anterior",
   "no existe",
   "no se encontraron",
+  "no cumple",
   "no ha completado",
   "ya está asignado",
   "ya está reservado",
   "ya fue calificado",
+  "ya tiene asignado",
+  "ya tiene un examen",
   "debe ser",
+  "no tiene rol",
+  "fecha/hora pasada",
+  "formato de fecha",
 ];
 
 function isClientError(message) {
-  const lowerMsg = message.toLowerCase();
+  const lowerMsg = (message || "").toLowerCase();
   return CLIENT_ERROR_KEYWORDS.some((kw) => lowerMsg.includes(kw.toLowerCase()));
 }
 
+// Programar examen práctico
 export async function programarExamenController(req, res) {
   try {
     const examen = await programarExamenService(req.body);
@@ -43,11 +51,11 @@ export async function programarExamenController(req, res) {
   }
 }
 
+// Registrar resultado del examen
 export async function registrarResultadoController(req, res) {
   try {
     const { id } = req.params;
-    const { resultado, observaciones } = req.body;
-    const examen = await registrarResultadoService(id, resultado, observaciones);
+    const examen = await registrarResultadoService(id, req.body);
     handleSuccess(res, 200, "Resultado del examen registrado en el historial académico.", examen);
   } catch (error) {
     if (isClientError(error.message)) {
@@ -58,6 +66,7 @@ export async function registrarResultadoController(req, res) {
   }
 }
 
+// Lista todos los exámenes del sistema
 export async function obtenerExamenesController(req, res) {
   try {
     const examenes = await obtenerExamenesService();
@@ -67,6 +76,22 @@ export async function obtenerExamenesController(req, res) {
   }
 }
 
+// Obtiene un examen específico por ID
+export async function obtenerExamenPorIdController(req, res) {
+  try {
+    const { id } = req.params;
+    const examen = await obtenerExamenPorIdService(id);
+    handleSuccess(res, 200, "Examen obtenido exitosamente.", examen);
+  } catch (error) {
+    if (isClientError(error.message)) {
+      handleErrorClient(res, 404, error.message);
+    } else {
+      handleErrorServer(res, 500, "Error al obtener el examen.", error.message);
+    }
+  }
+}
+
+// Historial académico de un alumno
 export async function obtenerHistorialAlumnoController(req, res) {
   try {
     const { alumnoId } = req.params;
