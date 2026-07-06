@@ -6,7 +6,7 @@ import { User } from "../entities/user.entity.js";
 import { Clase } from "../entities/clase.entity.js";
 import { Vehiculo } from "../entities/vehiculo.entity.js";
 import { Alumno } from "../entities/alumno.entity.js";
-import { Examen } from "../entities/examen.entity.js";
+import { ExamenPractico } from "../entities/examen.entity.js";
 import { ExamenPsicotecnico } from "../entities/examenPsicotecnico.entity.js";
 import { PreRegistro } from "../entities/preregistro.entity.js";
 import { TestTeorico } from "../entities/testTeorico.entity.js";
@@ -18,7 +18,7 @@ export const AppDataSource = new DataSource({
   username: `${DB_USERNAME}`,
   password: `${PASSWORD}`,
   database: `${DATABASE}`,
-  entities: [User, Clase, Vehiculo, Alumno, Examen, ExamenPsicotecnico, PreRegistro, TestTeorico],
+  entities: [User, Clase, Vehiculo, Alumno, ExamenPractico, ExamenPsicotecnico, PreRegistro, TestTeorico],
   synchronize: true,
   logging: false,
 });

@@ -53,16 +53,21 @@ export const SidebarBase = ({pageContent}) => {
                         <SidebarItem label="Mis Clases" destination="/mis-clases" icon={MdSchool} />
                         <SidebarItem label="Generar QR Asistencia" destination="/generar-qr-clase" icon={MdSchool} />
                         <SidebarItem label="Ver Asistencias" destination="/ver-asistencia" icon={MdSchool} />
+                        <SidebarItem label="Exámenes Prácticos" destination="/examenes-practicos" icon={MdDirectionsCar} />
                     </>
                 )}
                 {user?.rol === 'estudiante' && (
                     <>
                         <SidebarItem label="Mi Historial de Clases" destination="/historial-clases" icon={MdSchool} />
                         <SidebarItem label="Registrar Asistencia (QR)" destination="/escanear-asistencia" icon={MdSchool} />
+                        <SidebarItem label="Mi Historial Exámenes" destination="/examenes-practicos" icon={MdDirectionsCar} />
                     </>
                 )}
                 {user?.rol === 'secretario' && (
-                    <SidebarItem label="Gestionar Preinscripciones" destination="/gestionar-ventas" icon={MdAttachMoney} />
+                    <>
+                        <SidebarItem label="Exámenes Prácticos" destination="/examenes-practicos" icon={MdDirectionsCar} />
+                        <SidebarItem label="Gestionar Preinscripciones" destination="/gestionar-ventas" icon={MdAttachMoney} />
+                    </>
                 )}
                 {/* <SidebarItem label="Deudas" destination="/class" icon={MdAttachMoney} />*/}
             </ul>

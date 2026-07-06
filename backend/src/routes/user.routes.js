@@ -12,11 +12,11 @@ router.get("/frontend/getTeacherList", async (req, res) => {
       const r = (user.role || "").toLowerCase();
       return r.includes("docente") || r.includes("profesor");
     });
-    
+
     // Format to match what frontend expects: [{ id, nombre, email }]
     const formattedTeachers = teachers.map(t => ({
       id: t.id,
-      nombre: t.email.split("@")[0], // User entity has no nombre, extract from email
+      nombre: t.email.split("@")[0],
       email: t.email
     }));
 

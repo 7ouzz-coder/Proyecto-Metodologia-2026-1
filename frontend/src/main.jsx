@@ -18,6 +18,7 @@ import GestionVehiculosSecretaria from '@pages/GestionVehiculosSecretaria';
 import GenerarQRProfesor from '@pages/GenerarQRProfesor';
 import EscanearQRAlumno from '@pages/EscanearQRAlumno';
 import VerAsistenciaProfesor from '@pages/VerAsistenciaProfesor';
+import ExamenPractico from '@pages/ExamenPractico';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: '/ver-asistencia',
         element: <VerAsistenciaProfesor />
+      },
+      {
+        path: '/examenes-practicos',
+        element: <ExamenPractico />
       },
       /*{
         path: '/planes',
