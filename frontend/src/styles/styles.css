@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.actual-page-background {
+   background-image: url(../assets/Escuela-de-Conductores-Conduce.jpg);
+   background-repeat: no-repeat;
+   background-size: cover;
+};

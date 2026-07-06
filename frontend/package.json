@@ -1,0 +1,40 @@
+{
+  "name": "frontend-ayudantia-isw",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/plugin-proposal-optional-chaining-assign": "^7.29.7",
+    "@babel/plugin-transform-optional-chaining": "^7.29.7",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "axios": "^1.16.1",
+    "css": "^3.0.0",
+    "daisyui": "^5.5.20",
+    "html5-qrcode": "^2.3.8",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^1.16.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.6.0",
+    "react-router-dom": "^6.20.1",
+    "sweetalert2": "^11.10.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.3.0",
+    "vite": "^7.1.9"
+  }
+}
