@@ -16,25 +16,20 @@ export const ExamenPractico = new EntitySchema({
       length: 100,
       nullable: false,
     },
-    // Tipo de transmisión: "mecanico" | "automatico"
     tipoVehiculo: {
       type: "varchar",
       length: 20,
       nullable: true,
     },
-    // Marca y modelo del vehículo (ej: "Toyota Corolla")
     marcaModelo: {
       type: "varchar",
       length: 150,
       nullable: true,
     },
-    // Kilometraje al inicio del examen
     kilometrajeInicial: {
       type: "int",
       nullable: true,
     },
-
-    // Horario
     fechaHoraInicio: {
       type: "timestamp",
       nullable: false,
@@ -43,33 +38,27 @@ export const ExamenPractico = new EntitySchema({
       type: "timestamp",
       nullable: false,
     },
-
-    // Estado del examen: "pendiente" | "aprobado" | "reprobado"
     estado: {
       type: "varchar",
       length: 20,
       default: "pendiente",
       nullable: false,
     },
-
-    // Kilometraje al término del examen
     kilometrajeFinal: {
       type: "int",
       nullable: true,
     },
-    // Conteo total de faltas leves (L)
+    // conteo de faltas
     faltasLeves: {
       type: "int",
       default: 0,
       nullable: false,
     },
-    // Conteo total de faltas graves (G)
     faltasGraves: {
       type: "int",
       default: 0,
       nullable: false,
     },
-    // Conteo total de faltas reprobatorias (R)
     faltasReprobatorias: {
       type: "int",
       default: 0,
@@ -79,13 +68,11 @@ export const ExamenPractico = new EntitySchema({
       type: "simple-json",
       nullable: true,
     },
-    // Observaciones del instructor sobre el desempeño del postulante
+    // observaciones del instructor
     observaciones: {
       type: "text",
       nullable: true,
     },
-
-    // Auditoría
     created_at: {
       type: "timestamp",
       createDate: true,
@@ -98,7 +85,6 @@ export const ExamenPractico = new EntitySchema({
     },
   },
   relations: {
-    // Alumno/postulante que rinde el examen
     alumno: {
       target: "User",
       type: "many-to-one",
@@ -106,7 +92,6 @@ export const ExamenPractico = new EntitySchema({
       nullable: false,
       onDelete: "CASCADE",
     },
-    // Instructor evaluador asignado por la secretaría
     instructor: {
       target: "User",
       type: "many-to-one",
