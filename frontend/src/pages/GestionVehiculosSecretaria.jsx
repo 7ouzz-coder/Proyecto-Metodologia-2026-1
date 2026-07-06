@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@context/AuthContext';
 import { getVehiculos, createVehiculo, deleteVehiculo, updateVehiculo } from '@services/vehiculo.service';
 import { getReservas } from '@services/reserva.service';
+import axios from '@services/root.service';
 
 export default function GestionVehiculosSecretaria() {
   const { user } = useAuth();
@@ -10,6 +11,13 @@ export default function GestionVehiculosSecretaria() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [showFallaModal, setShowFallaModal] = useState(false);
+  const [fallaData, setFallaData] = useState({
+    idVehiculo: null,
+    kilometraje: 0,
+    gravedad: 'Alta',
+    descripcion: ''
+  });
 
   const [showModal, setShowModal] = useState(false);
   const [editingVehiculo, setEditingVehiculo] = useState(null);
@@ -85,14 +93,49 @@ export default function GestionVehiculosSecretaria() {
     
     try {
       const res = await deleteVehiculo(id);
-      if (res?.status === "Success" || res?.message?.includes("exitosamente")) {
-        alert("Vehículo eliminado");
-        cargarVehiculos();
+      if (res.error) {
+        alert(res.message);
       } else {
-        alert(res?.message || "Error al eliminar vehículo");
+        cargarVehiculos();
+        setShowModal(false);
       }
     } catch (err) {
-      alert("Error al eliminar vehículo");
+      alert("Error al procesar vehículo");
+    }
+  };
+
+  const handleDarDeAlta = async (idVehiculo) => {
+    try {
+      if (confirm("¿Estás seguro de que deseas dar de alta este vehículo? Pasará a estar 'disponible'.")) {
+        const res = await updateVehiculo(idVehiculo, { estado: "disponible" });
+        if (res.error) alert(res.message);
+        else cargarVehiculos();
+      }
+    } catch (err) {
+      alert("Error al dar de alta el vehículo.");
+    }
+  };
+
+  const submitFalla = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/mantenimiento', {
+        idVehiculo: fallaData.idVehiculo,
+        nuevoKilometraje: Number(fallaData.kilometraje),
+        reporteFalla: {
+          gravedad: fallaData.gravedad,
+          descripcion: fallaData.descripcion
+        }
+      });
+      if (response.data.exito) {
+        alert(response.data.mensaje);
+        setShowFallaModal(false);
+        cargarVehiculos();
+      } else {
+        alert(response.data.mensaje || "Error al reportar la falla.");
+      }
+    } catch (error) {
+      alert("Error de conexión al reportar la falla.");
     }
   };
 
@@ -144,6 +187,24 @@ export default function GestionVehiculosSecretaria() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right space-x-2">
+                      {vehiculo.estado === 'inactivo' ? (
+                        <button 
+                          className="btn btn-sm btn-success text-white"
+                          onClick={() => handleDarDeAlta(vehiculo.id)}
+                        >
+                          Dar de Alta
+                        </button>
+                      ) : (
+                        <button 
+                          className="btn btn-sm btn-warning text-white"
+                          onClick={() => {
+                            setFallaData({ ...fallaData, idVehiculo: vehiculo.id, kilometraje: vehiculo.kilometraje || 0 });
+                            setShowFallaModal(true);
+                          }}
+                        >
+                          Reportar Falla
+                        </button>
+                      )}
                       <button 
                         className="btn btn-sm btn-info text-white"
                         onClick={() => {
@@ -272,6 +333,56 @@ export default function GestionVehiculosSecretaria() {
               <div className="flex justify-end gap-2 mt-6">
                 <button type="button" className="btn btn-ghost" onClick={() => setShowModal(false)}>Cancelar</button>
                 <button type="submit" className="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Reportar Falla */}
+      {showFallaModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4 text-red-600">Reportar Falla Vehicular</h2>
+            <form onSubmit={submitFalla} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Kilometraje Actual</label>
+                <input 
+                  required 
+                  type="number" 
+                  className="input input-bordered w-full mt-1" 
+                  value={fallaData.kilometraje} 
+                  onChange={e => setFallaData({...fallaData, kilometraje: e.target.value})} 
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Gravedad</label>
+                <select 
+                  className="select select-bordered w-full mt-1" 
+                  value={fallaData.gravedad} 
+                  onChange={e => setFallaData({...fallaData, gravedad: e.target.value})}
+                >
+                  <option value="Baja">Baja (Mantiene disponibilidad)</option>
+                  <option value="Media">Media (Revisión sugerida)</option>
+                  <option value="Alta">Alta (Bloqueo e Inactividad automática)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Descripción de la falla</label>
+                <textarea 
+                  required
+                  className="textarea textarea-bordered w-full mt-1" 
+                  rows="3"
+                  value={fallaData.descripcion} 
+                  onChange={e => setFallaData({...fallaData, descripcion: e.target.value})} 
+                ></textarea>
+              </div>
+
+              <div className="flex justify-end gap-2 mt-6">
+                <button type="button" className="btn btn-ghost" onClick={() => setShowFallaModal(false)}>Cancelar</button>
+                <button type="submit" className="btn btn-error text-white">Enviar Reporte</button>
               </div>
             </form>
           </div>

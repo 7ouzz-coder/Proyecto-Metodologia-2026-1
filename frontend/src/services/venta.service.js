@@ -26,10 +26,19 @@ export async function aprobarVentaService(preregistroId) {
     }
 }
 
-export async function rechazarVentaService(preregistroId) {
+export async function rechazarVentaService(preregistroId, motivo) {
     try {
-        const response = await axios.post(`/preregistro/${preregistroId}/rechazar`, { motivo: "No cumple con los requisitos" });
+        const response = await axios.post(`/preregistro/${preregistroId}/rechazar`, { motivo: motivo || "No cumple con los requisitos" });
         return Object.assign(response.data, { status: response.status });
+    } catch (error) {
+        throw error.response?.data || error;
+    }
+}
+
+export async function obtenerHistorialVentasService() {
+    try {
+        const response = await axios.get(`/preregistro/historial`);
+        return response.data;
     } catch (error) {
         throw error.response?.data || error;
     }

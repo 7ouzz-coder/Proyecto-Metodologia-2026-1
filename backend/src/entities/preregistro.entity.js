@@ -19,9 +19,18 @@ export const PreRegistro = new EntitySchema({
       length: 20,
       nullable: false,
     },
+    email: {
+      type: "varchar",
+      length: 255,
+      nullable: false,
+    },
     telefono: {
       type: "varchar",
       length: 20,
+      nullable: false,
+    },
+    fechaNacimiento: {
+      type: "date",
       nullable: false,
     },
     sede: {
@@ -43,6 +52,11 @@ export const PreRegistro = new EntitySchema({
       type: "varchar",
       length: 20,
       default: "pendiente", // pendiente, aceptado, rechazado
+    },
+    motivoRechazo: {
+      type: "varchar",
+      length: 500,
+      nullable: true,
     },
     created_at: {
       type: "timestamp",

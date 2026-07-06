@@ -8,7 +8,9 @@ export async function crearPreRegistro(data) {
   const nuevoPreRegistro = repository.create({
     nombreCompleto: data.nombreCompleto,
     rut: data.rut,
+    email: data.email,
     telefono: data.telefono,
+    fechaNacimiento: data.fechaNacimiento,
     sede: data.sede,
     plan: data.plan,
     comprobantePagoUrl: data.comprobantePagoUrl,
@@ -19,7 +21,18 @@ export async function crearPreRegistro(data) {
 
 export async function obtenerPreRegistrosPendientes() {
   const repository = AppDataSource.getRepository(PreRegistro);
-  return await repository.find({ where: { estado: "pendiente" } });
+  return await repository.find({ where: { estado: "pendiente" }, order: { created_at: "DESC" } });
+}
+
+export async function obtenerHistorialPreRegistros() {
+  const repository = AppDataSource.getRepository(PreRegistro);
+  return await repository.find({
+    where: [
+      { estado: "aceptado" },
+      { estado: "rechazado" }
+    ],
+    order: { updated_at: "DESC" }
+  });
 }
 
 export async function aprobarPreRegistro(id) {
@@ -35,8 +48,7 @@ export async function aprobarPreRegistro(id) {
 
   // Crear usuario Alumno
   const generatedPassword = await bcrypt.hash(preRegistro.rut, 10); // usar rut como pass inicial
-  // Email generado para evitar nulos ya que email es unique y requerido
-  const email = `${preRegistro.rut.replace(/[^a-zA-Z0-9]/g, "")}@escuela.cl`;
+  const email = preRegistro.email; // usamos el correo guardado del pre-registro
 
   const newUser = userRepo.create({
     email: email,
@@ -61,9 +73,10 @@ export async function rechazarPreRegistro(id, motivo) {
   if (preRegistro.estado !== "pendiente") throw new Error("La solicitud no está pendiente");
 
   preRegistro.estado = "rechazado";
+  preRegistro.motivoRechazo = motivo || "No cumple los requisitos";
   await preRegistroRepo.save(preRegistro);
 
-  console.log(`[Email Mock] Hola ${preRegistro.nombreCompleto}, tu inscripción ha sido rechazada. Motivo: ${motivo || "No cumple los requisitos"}.`);
+  console.log(`[Email Mock] Enviando a ${preRegistro.email}: Hola ${preRegistro.nombreCompleto}, tu inscripción ha sido rechazada. Motivo: ${preRegistro.motivoRechazo}.`);
 
   return { message: "Solicitud rechazada" };
 }

@@ -4,8 +4,8 @@ export async function crearPreRegistro(req, res) {
   try {
     const data = req.body;
     // Validaciones básicas
-    if (!data.nombreCompleto || !data.rut || !data.plan || !data.comprobantePagoUrl) {
-      return res.status(400).json({ message: "Faltan datos obligatorios (nombreCompleto, rut, plan, comprobantePagoUrl)" });
+    if (!data.nombreCompleto || !data.rut || !data.plan || !data.comprobantePagoUrl || !data.email || !data.fechaNacimiento) {
+      return res.status(400).json({ message: "Faltan datos obligatorios (nombreCompleto, rut, email, fechaNacimiento, plan, comprobante)" });
     }
     const result = await preRegistroService.crearPreRegistro(data);
     res.status(201).json({ message: "Preinscripción enviada correctamente", data: result });
@@ -20,6 +20,15 @@ export async function obtenerPreRegistrosPendientes(req, res) {
     res.status(200).json({ data: results });
   } catch (error) {
     res.status(500).json({ message: "Error al obtener solicitudes", error: error.message });
+  }
+}
+
+export async function obtenerHistorialPreRegistros(req, res) {
+  try {
+    const results = await preRegistroService.obtenerHistorialPreRegistros();
+    res.status(200).json({ data: results });
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener historial", error: error.message });
   }
 }
 

@@ -5,6 +5,7 @@ const router = Router();
 
 router.post("/", preRegistroController.crearPreRegistro);
 router.get("/", preRegistroController.obtenerPreRegistrosPendientes);
+router.get("/historial", preRegistroController.obtenerHistorialPreRegistros);
 router.post("/:id/aprobar", preRegistroController.aprobarPreRegistro);
 router.post("/:id/rechazar", preRegistroController.rechazarPreRegistro);
 

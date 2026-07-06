@@ -13,21 +13,7 @@ export async function loginUser(email, password) {
     throw new Error("Credenciales incorrectas");
   }
 
-  let rol = "estudiante";
-  const userRole = (user.role || "").toLowerCase();
-  if (userRole.includes("docente") || userRole.includes("profesor")) {
-    rol = "profesor";
-  } else if (userRole.includes("secretar")) {
-    rol = "secretario";
-  } else if (userRole.includes("alumno") || userRole.includes("estudiante")) {
-    rol = "estudiante";
-  } else {
-    rol = userRole || "estudiante";
-  }
-
-  const nombre = user.email.split("@")[0];
-
-  const payload = { sub: user.id, email: user.email, rol, nombre };
+  const payload = { sub: user.id, email: user.email, rol: user.role };
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
   delete user.password;

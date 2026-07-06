@@ -6,7 +6,8 @@ import {
     aprobarVentaService, 
     eliminarVentaService,
     listarVentasService,
-    rechazarVentaService
+    rechazarVentaService,
+    obtenerHistorialVentasService
 } from '../services/venta.service';
 
 export const useVentas = () => {
@@ -69,14 +70,28 @@ export const useVentas = () => {
         }
     };
 
-    const rechazarVenta = async (ventaId) => {
+    const rechazarVenta = async (ventaId, motivo) => {
         setLoading(true);
         setError(null);
         try {
-            const response = await rechazarVentaService(ventaId);
+            const response = await rechazarVentaService(ventaId, motivo);
             return response;
         } catch (err) {
             setError(err.message || 'Error al rechazar la venta');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getHistorialPreRegistros = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await obtenerHistorialVentasService();
+            return response.data;
+        } catch (err) {
+            setError(err.message || 'Error al obtener el historial');
             throw err;
         } finally {
             setLoading(false);
@@ -118,6 +133,7 @@ export const useVentas = () => {
         getClasesDisponibles,
         getHistorialVentas,
         getAllVentas,
+        getHistorialPreRegistros,
         aprobarVenta,
         rechazarVenta,
         eliminarVenta

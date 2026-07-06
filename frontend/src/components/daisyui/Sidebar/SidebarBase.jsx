@@ -5,13 +5,23 @@ import {
   MdAttachMoney, 
   MdShoppingCart, 
   MdAdminPanelSettings,
-  MdDirectionsCar
+  MdDirectionsCar,
+  MdLogout
 } from "react-icons/md";
 
 import { useAuth } from '@context/AuthContext';
+import { logout } from '@services/auth.service.js';
+import { useNavigate } from 'react-router-dom';
 
 export const SidebarBase = ({pageContent}) => {
     const { user } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await logout();
+        // Recargar la página para que el contexto de autenticación se limpie correctamente o redirigir
+        window.location.href = '/auth';
+    };
     return (
     <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -56,6 +66,15 @@ export const SidebarBase = ({pageContent}) => {
                 )}
                 {/* <SidebarItem label="Deudas" destination="/class" icon={MdAttachMoney} />*/}
             </ul>
+            <div className="w-full p-4 mt-auto">
+                <button 
+                    onClick={handleLogout} 
+                    className="btn btn-error btn-outline w-full flex items-center justify-center gap-2"
+                >
+                    <MdLogout className="text-xl" />
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
             </div>
         </div>
     </div>
