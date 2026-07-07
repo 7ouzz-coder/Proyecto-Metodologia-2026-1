@@ -4,7 +4,6 @@ import Login from '@pages/Login';
 import Home from '@pages/Home';
 import Error404 from '@pages/Error404';
 import Root from '@pages/Root';
-import Clase from '@pages/Clase';
 import ComprarClases from '@pages/ComprarClases';
 import GestionarVentas from '@pages/GestionarVentas';
 import ProtectedRoute from '@components/ProtectedRoute';
@@ -18,7 +17,8 @@ import GestionVehiculosSecretaria from '@pages/GestionVehiculosSecretaria';
 import GenerarQRProfesor from '@pages/GenerarQRProfesor';
 import EscanearQRAlumno from '@pages/EscanearQRAlumno';
 import VerAsistenciaProfesor from '@pages/VerAsistenciaProfesor';
-import ExamenPractico from '@pages/ExamenPractico';
+import GestionClasesAlumnos from '@pages/GestionClasesAlumnos';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -26,16 +26,16 @@ const router = createBrowserRouter([
     errorElement: <Error404 />,
     children: [
       {
+        path: '/gestion-clases-alumnos',
+        element: <GestionClasesAlumnos />
+      },
+      {
         path: '/home',
         element: <Home />
       },
       {
-        path: '/clase',
-        element: <Clase/>
-      },
-       {
         path: '/planes',
-        element: <Plan/>
+        element: <Plan />
       },
       {
         path: '/comprar-clases',
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         element: <MisClases />
       },
       {
-         path: '/gestionar-ventas',
+        path: '/gestionar-ventas',
         element: <GestionarVentas />
       },
       {

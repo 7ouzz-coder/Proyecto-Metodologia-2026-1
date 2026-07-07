@@ -18,13 +18,7 @@ export const Vehiculo = new EntitySchema({
     modelo: {
       type: "varchar",
       length: 100,
-      nullable: true,
-    },
-    transmision: {
-      type: "varchar",
-      length: 50,
       nullable: false,
-      default: "mecanico",
     },
     kilometraje: {
       type: "int",
@@ -35,7 +29,7 @@ export const Vehiculo = new EntitySchema({
       type: "varchar",
       length: 50,
       nullable: false,
-      default: "disponible",
+      default: "Activo",
     },
     created_at: {
       type: "timestamp",

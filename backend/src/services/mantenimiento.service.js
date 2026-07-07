@@ -98,9 +98,9 @@ export async function registrarEstadoVehiculoService(idVehiculo, nuevoKilometraj
 
         //  Validaci├│n Autom├ítica de Od├│metro
         if (nuevoKilometraje <= vehiculo.kilometraje) {
-            return { 
-                exito: false, 
-                mensaje: `Error: El kilometraje de t├®rmino (${nuevoKilometraje} km) debe ser mayor al ├║ltimo registro (${vehiculo.kilometraje} km).` 
+            return {
+                exito: false,
+                mensaje: `Error: El kilometraje de t├®rmino (${nuevoKilometraje} km) debe ser mayor al ├║ltimo registro (${vehiculo.kilometraje} km).`
             };
         }
 
@@ -122,7 +122,7 @@ export async function registrarEstadoVehiculoService(idVehiculo, nuevoKilometraj
 
         return {
             exito: true,
-            mensaje: alertaEnviada 
+            mensaje: alertaEnviada
                 ? `Registro exitoso. ALERTA: Veh├¡culo ${vehiculo.patente} bloqueado por fallas.`
                 : `Estado del veh├¡culo actualizado correctamente.`,
             datos: {

@@ -41,7 +41,10 @@ export async function register(data) {
 
 export async function preRegister(data) {
     try {
-        const response = await axios.post('/preregistro', data);
+        // Axios automáticamente establece multipart/form-data si detecta que data es FormData
+        const response = await axios.post('/preregistro', data, {
+            headers: data instanceof FormData ? { 'Content-Type': 'multipart/form-data' } : undefined
+        });
         return response.data;
     } catch (error) {
         return error.response?.data || { message: 'Error al conectar con el servidor' };

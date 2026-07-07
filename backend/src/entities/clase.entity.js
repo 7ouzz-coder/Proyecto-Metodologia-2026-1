@@ -32,6 +32,11 @@ export const Clase = new EntitySchema({
       length: 100,
       nullable: true,
     },
+    estado_clase: {
+      type: "varchar",
+      length: 50,
+      default: "Activa",
+    },
     created_at: {
       type: "timestamp",
       createDate: true,

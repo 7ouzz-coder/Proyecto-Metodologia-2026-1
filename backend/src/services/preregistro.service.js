@@ -2,6 +2,7 @@ import { AppDataSource } from "../config/configDB.js";
 import { PreRegistro } from "../entities/preregistro.entity.js";
 import { User } from "../entities/user.entity.js";
 import bcrypt from "bcrypt";
+import { enviarCorreoAceptacion, enviarCorreoRechazo } from "./email.service.js";
 
 export async function crearPreRegistro(data) {
   const repository = AppDataSource.getRepository(PreRegistro);
@@ -53,7 +54,7 @@ export async function aprobarPreRegistro(id) {
   const newUser = userRepo.create({
     email: email,
     password: generatedPassword,
-    role: "Alumno",
+    role: "estudiante",
     rut: preRegistro.rut,
     phone: preRegistro.telefono,
     campus: preRegistro.sede,
@@ -61,7 +62,8 @@ export async function aprobarPreRegistro(id) {
 
   await userRepo.save(newUser);
 
-  console.log(`[Email Mock] Hola ${preRegistro.nombreCompleto}, tu inscripción ha sido aceptada. Tus credenciales son - Email: ${email}, Clave: (tu rut)`);
+  // Enviar correo real
+  await enviarCorreoAceptacion(email, preRegistro.rut);
 
   return { message: "Solicitud aprobada y usuario creado", user: newUser };
 }
@@ -76,7 +78,8 @@ export async function rechazarPreRegistro(id, motivo) {
   preRegistro.motivoRechazo = motivo || "No cumple los requisitos";
   await preRegistroRepo.save(preRegistro);
 
-  console.log(`[Email Mock] Enviando a ${preRegistro.email}: Hola ${preRegistro.nombreCompleto}, tu inscripción ha sido rechazada. Motivo: ${preRegistro.motivoRechazo}.`);
+  // Enviar correo real
+  await enviarCorreoRechazo(preRegistro.email, preRegistro.motivoRechazo);
 
   return { message: "Solicitud rechazada" };
 }

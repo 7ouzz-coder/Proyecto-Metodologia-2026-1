@@ -21,6 +21,7 @@ async function editClaseInfo(clase) {
         focusConfirm: false,
         showCancelButton: true,
         confirmButtonText: 'Editar',
+        cancelButtonText: 'Cancelar',
         preConfirm: () => {
             
             const tipo = document.getElementById('swal2-input1').value;
@@ -41,6 +42,12 @@ async function editClaseInfo(clase) {
 
         },
         theme: "light",
+        customClass: {
+            confirmButton: 'bg-indigo-600 text-white font-medium px-5 py-2 rounded hover:bg-indigo-700 mx-2 transition-colors',
+            cancelButton: 'bg-gray-200 text-gray-800 font-medium px-5 py-2 rounded hover:bg-gray-300 mx-2 transition-colors',
+            popup: 'rounded-xl shadow-xl'
+        },
+        buttonsStyling: false
     });
     if (formValues) {
         return {

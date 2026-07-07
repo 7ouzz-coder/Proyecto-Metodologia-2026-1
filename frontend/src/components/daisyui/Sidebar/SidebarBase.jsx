@@ -47,7 +47,7 @@ export const SidebarBase = ({pageContent}) => {
             {/* Sidebar content here */}
             <ul className="menu w-full grow">
                 <SidebarItem label="Inicio" destination="/home" icon={MdHouse} />            
-                <SidebarItem label="Clases" destination="/clase" icon={MdSchool} />
+                <SidebarItem label="Gestión de Clases" destination="/gestion-clases-alumnos" icon={MdSchool} />
                 {user?.rol === 'profesor' && (
                     <>
                         <SidebarItem label="Mis Clases" destination="/mis-clases" icon={MdSchool} />
@@ -65,8 +65,13 @@ export const SidebarBase = ({pageContent}) => {
                 )}
                 {user?.rol === 'secretario' && (
                     <>
+<<<<<<< HEAD
                         <SidebarItem label="Exámenes Prácticos" destination="/examenes-practicos" icon={MdDirectionsCar} />
                         <SidebarItem label="Gestionar Preinscripciones" destination="/gestionar-ventas" icon={MdAttachMoney} />
+=======
+                        <SidebarItem label="Gestionar Preinscripciones" destination="/gestionar-ventas" icon={MdAttachMoney} />
+                        <SidebarItem label="Gestión de Vehículos" destination="/gestion-vehiculos" icon={MdDirectionsCar} />
+>>>>>>> main
                     </>
                 )}
                 {/* <SidebarItem label="Deudas" destination="/class" icon={MdAttachMoney} />*/}
