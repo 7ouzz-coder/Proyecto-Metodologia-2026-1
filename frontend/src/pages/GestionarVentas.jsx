@@ -199,9 +199,9 @@ export default function GestionarVentas() {
                         <p className="text-xs text-slate-500 flex items-center"><span className="mr-1">📍</span> {sol.sede}</p>
                       </td>
                       <td className="px-6 py-4 text-center">
-                        {sol.comprobantePagoUrl?.startsWith('http') ? (
+                        {sol.comprobantePagoUrl && sol.comprobantePagoUrl !== 'archivo-adjunto' ? (
                           <a 
-                            href={sol.comprobantePagoUrl} 
+                            href={sol.comprobantePagoUrl.startsWith('http') ? sol.comprobantePagoUrl : `http://localhost:5000/uploads/comprobantes/${sol.comprobantePagoUrl}`} 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="inline-flex items-center px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-colors"
@@ -209,7 +209,7 @@ export default function GestionarVentas() {
                             <span>📄 Ver</span>
                           </a>
                         ) : (
-                          <span className="text-xs text-slate-400 italic">N/A</span>
+                          <span className="text-xs text-slate-400 italic">No disponible</span>
                         )}
                       </td>
                       <td className="px-6 py-4 text-center">

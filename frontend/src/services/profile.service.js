@@ -41,3 +41,14 @@ export const getTeacherList = async () => {
         return [];
     }    
 }
+
+// RF1/RF2: Obtener lista de alumnos activos (con estado "Activo" validado en backend)
+export const getStudentList = async () => {
+    try {
+        const response = await axios.get(`/users/frontend/getStudentList`);
+        return response?.data?.data || [];
+    } catch (error) {
+        console.error(error);
+        return [];
+    }    
+}

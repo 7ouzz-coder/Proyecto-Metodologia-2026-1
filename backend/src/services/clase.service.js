@@ -81,6 +81,7 @@ export async function crearClase(data) {
     fechaHoraInicio: inicio,
     fechaHoraFin: fin,
     vehiculoId: finalVehiculoId,
+    estado_clase: data.estado_clase || "Activa",
     docente,
     alumnos,
   });
@@ -108,4 +109,44 @@ export async function obtenerClases() {
     relations: ["docente", "alumnos"],
     order: { fechaHoraInicio: "ASC" }
   });
+}
+
+export async function updateClase(id, data) {
+  const claseRepo = AppDataSource.getRepository(Clase);
+  const clase = await claseRepo.findOne({ where: { id: parseInt(id) } });
+  
+  if (!clase) {
+    throw new Error(`La clase con ID ${id} no existe.`);
+  }
+
+  // Update provided fields
+  if (data.descripcion) clase.descripcion = data.descripcion;
+  if (data.tipo) clase.tipo = data.tipo;
+  if (data.estado_clase) clase.estado_clase = data.estado_clase;
+  if (data.vehiculoId !== undefined) clase.vehiculoId = data.vehiculoId;
+
+  // Si se envían fechas por separado en data.fecha_clase, hora_inicio, hora_fin
+  if (data.fecha_clase && data.hora_inicio && data.hora_fin) {
+    const inicio = new Date(`${data.fecha_clase}T${data.hora_inicio}:00`);
+    const fin = new Date(`${data.fecha_clase}T${data.hora_fin}:00`);
+    if (isNaN(inicio.getTime()) || isNaN(fin.getTime()) || inicio >= fin) {
+      throw new Error("Fechas/horarios inválidos para actualizar la clase.");
+    }
+    clase.fechaHoraInicio = inicio;
+    clase.fechaHoraFin = fin;
+  }
+
+  return await claseRepo.save(clase);
+}
+
+export async function deleteClase(id) {
+  const claseRepo = AppDataSource.getRepository(Clase);
+  const clase = await claseRepo.findOne({ where: { id: parseInt(id) } });
+  
+  if (!clase) {
+    throw new Error(`La clase con ID ${id} no existe.`);
+  }
+
+  await claseRepo.remove(clase);
+  return { message: "Clase eliminada exitosamente" };
 }

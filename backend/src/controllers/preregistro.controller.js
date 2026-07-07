@@ -3,6 +3,12 @@ import * as preRegistroService from "../services/preregistro.service.js";
 export async function crearPreRegistro(req, res) {
   try {
     const data = req.body;
+    
+    // Si multer procesó un archivo, guardamos la URL/ruta
+    if (req.file) {
+      data.comprobantePagoUrl = req.file.filename;
+    }
+
     // Validaciones básicas
     if (!data.nombreCompleto || !data.rut || !data.plan || !data.comprobantePagoUrl || !data.email || !data.fechaNacimiento) {
       return res.status(400).json({ message: "Faltan datos obligatorios (nombreCompleto, rut, email, fechaNacimiento, plan, comprobante)" });

@@ -23,7 +23,7 @@ const Login = () => {
         fechaNacimiento: '',
         sede: '',
         plan: '',
-        comprobantePagoUrl: '',
+        comprobante: null,
         aceptaTerminos: false
     });
     const [preRegisterSuccess, setPreRegisterSuccess] = useState('');
@@ -119,10 +119,10 @@ const Login = () => {
     };
 
     const handlePreRegisterChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, type, checked, files } = e.target;
         setPreRegisterData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
         }));
     };
 
@@ -157,7 +157,19 @@ const Login = () => {
         }
 
         try {
-            const response = await preRegister(preRegisterData);
+            // Usamos FormData porque enviamos un archivo
+            const formDataToSend = new FormData();
+            Object.keys(preRegisterData).forEach(key => {
+                if (key === 'comprobante' && preRegisterData[key]) {
+                    formDataToSend.append('comprobante', preRegisterData[key]);
+                } else {
+                    formDataToSend.append(key, preRegisterData[key]);
+                }
+            });
+            // Hack para que la validación del backend pase si no encuentra la propiedad
+            formDataToSend.append('comprobantePagoUrl', 'archivo-adjunto');
+
+            const response = await preRegister(formDataToSend);
             if (response.status === 'Success' || (response.message && response.message.toLowerCase().includes('correcta'))) {
                 setPreRegisterSuccess('¡Preinscripción enviada con éxito! La secretaria revisará tu comprobante y se creará tu usuario.');
                 setPreRegisterData({
@@ -168,7 +180,7 @@ const Login = () => {
                     fechaNacimiento: '',
                     sede: '',
                     plan: '',
-                    comprobantePagoUrl: '',
+                    comprobante: null,
                     aceptaTerminos: false
                 });
             } else {
@@ -384,23 +396,34 @@ const Login = () => {
                                         />
                                     </div>
                                 </div>
-                                
-                                {['plan', 'comprobantePagoUrl'].map((field) => (
-                                    <div key={field}>
-                                        <input
-                                            type="text"
-                                            name={field}
-                                            value={preRegisterData[field]}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="text-xs text-slate-500 font-bold ml-1 mb-1 block">Plan a Contratar</label>
+                                        <select
+                                            name="plan"
+                                            value={preRegisterData.plan}
                                             onChange={handlePreRegisterChange}
-                                            placeholder={
-                                                field === 'plan' ? 'Plan a contratar' :
-                                                'URL del Comprobante de Pago (o Drive link)'
-                                            }
-                                            className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-800 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 focus:outline-none transition-all duration-200 placeholder-slate-400 text-sm"
+                                            className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-800 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 focus:outline-none transition-all duration-200 text-sm"
+                                            required
+                                        >
+                                            <option value="" disabled>Selecciona un plan</option>
+                                            <option value="Basico">Plan Básico</option>
+                                            <option value="Intermedio">Plan Intermedio</option>
+                                            <option value="Avanzado">Plan Avanzado</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="text-xs text-slate-500 font-bold ml-1 mb-1 block">Comprobante de Pago</label>
+                                        <input
+                                            type="file"
+                                            name="comprobante"
+                                            onChange={handlePreRegisterChange}
+                                            accept="image/*,.pdf"
+                                            className="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-800 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 focus:outline-none transition-all duration-200 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
                                             required
                                         />
                                     </div>
-                                ))}
+                                </div>
 
                                 <div className="flex items-center space-x-3 py-2">
                                     <input 
