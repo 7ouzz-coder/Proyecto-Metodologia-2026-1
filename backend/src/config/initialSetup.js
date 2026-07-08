@@ -38,6 +38,44 @@ async function iniciarUsuarios() {
   }
 }
 
+import { Plan } from "../entities/plan.entity.js";
+
+async function iniciarPlanes() {
+  try {
+    const planRepository = AppDataSource.getRepository(Plan);
+    const count = await planRepository.count();
+    if (count > 0) return;
+
+    await Promise.all([
+      planRepository.save(planRepository.create({
+        nombre: "Básico",
+        costo: 50000,
+        duracion_semanas: 4,
+        clases_totales: 8,
+        tipo: "completo"
+      })),
+      planRepository.save(planRepository.create({
+        nombre: "Intermedio",
+        costo: 80000,
+        duracion_semanas: 6,
+        clases_totales: 15,
+        tipo: "completo"
+      })),
+      planRepository.save(planRepository.create({
+        nombre: "Avanzado",
+        costo: 120000,
+        duracion_semanas: 8,
+        clases_totales: 25,
+        tipo: "completo"
+      }))
+    ]);
+
+    console.log(" => Planes creados");
+  } catch (error) {
+    console.error("Error al crear planes:", error);
+  }
+}
+
 async function iniciarVehiculos() {
   try {
     await crearVehiculoNulo();
@@ -46,4 +84,4 @@ async function iniciarVehiculos() {
   }
 }
 
-export { iniciarUsuarios, iniciarVehiculos };
+export { iniciarUsuarios, iniciarVehiculos, iniciarPlanes };

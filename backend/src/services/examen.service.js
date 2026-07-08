@@ -2,6 +2,7 @@ import { AppDataSource } from "../config/configDB.js";
 import { ExamenPractico } from "../entities/examen.entity.js";
 import { Clase } from "../entities/clase.entity.js";
 import { User } from "../entities/user.entity.js";
+import { Vehiculo } from "../entities/vehiculo.entity.js";
 
 
 const MIN_CLASES_PRACTICAS = 5;
@@ -18,8 +19,6 @@ const FALTAS_GRAVES = new Set([
   "G11", "G12", "G13", "G14", "G15", "G16", "G17", "G18", "G19", "G20", "G21",
 ]);
 const FALTAS_REPROBATORIAS = new Set(["R1", "R2", "R3", "R4", "R5", "R6", "R7"]);
-
-// Helpers
 
 // valida que las fechas sean correctas y coherentes
 function validarFechas(fechaHoraInicio, fechaHoraFin) {
@@ -39,6 +38,16 @@ function validarFechas(fechaHoraInicio, fechaHoraFin) {
 }
 
 async function verificarDisponibilidadVehiculo(vehiculoId, inicio, fin, examenRepo, claseRepo) {
+  const vehiculoRepo = AppDataSource.getRepository(Vehiculo);
+  const vehiculo = await vehiculoRepo.findOne({ where: { patente: vehiculoId } });
+  if (!vehiculo) {
+    throw new Error(`El vehículo "${vehiculoId}" no existe en el sistema.`);
+  }
+  const estadoLower = (vehiculo.estado || "").toLowerCase();
+  if (estadoLower === "en mantenimiento" || estadoLower === "inactivo") {
+    throw new Error(`El vehículo "${vehiculoId}" no está disponible (estado: ${vehiculo.estado}).`);
+  }
+
   // Traslape con clases prácticas de Ángel
   const traslapeClase = await claseRepo
     .createQueryBuilder("clase")

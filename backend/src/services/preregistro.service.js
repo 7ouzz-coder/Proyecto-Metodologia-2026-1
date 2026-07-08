@@ -13,7 +13,7 @@ export async function crearPreRegistro(data) {
     telefono: data.telefono,
     fechaNacimiento: data.fechaNacimiento,
     sede: data.sede,
-    plan: data.plan,
+    plan: { id_plan: data.id_plan },
     comprobantePagoUrl: data.comprobantePagoUrl,
     estado: "pendiente",
   });
@@ -22,7 +22,11 @@ export async function crearPreRegistro(data) {
 
 export async function obtenerPreRegistrosPendientes() {
   const repository = AppDataSource.getRepository(PreRegistro);
-  return await repository.find({ where: { estado: "pendiente" }, order: { created_at: "DESC" } });
+  return await repository.find({
+    where: { estado: "pendiente" },
+    relations: ["plan"],
+    order: { created_at: "DESC" }
+  });
 }
 
 export async function obtenerHistorialPreRegistros() {
@@ -32,6 +36,7 @@ export async function obtenerHistorialPreRegistros() {
       { estado: "aceptado" },
       { estado: "rechazado" }
     ],
+    relations: ["plan"],
     order: { updated_at: "DESC" }
   });
 }

@@ -194,7 +194,7 @@ export default function GestionarVentas() {
                       </td>
                       <td className="px-6 py-4">
                         <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 mb-1">
-                          {sol.plan}
+                          {sol.plan?.nombre || 'Desconocido'}
                         </span>
                         <p className="text-xs text-slate-500 flex items-center"><span className="mr-1">📍</span> {sol.sede}</p>
                       </td>

@@ -13,7 +13,7 @@ const Login = () => {
     });
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    
+
     const [isPreRegister, setIsPreRegister] = useState(false);
     const [preRegisterData, setPreRegisterData] = useState({
         nombreCompleto: '',
@@ -201,7 +201,7 @@ const Login = () => {
                 <div className="absolute top-0 left-0 w-full h-full opacity-20 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
                 <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
                 <div className="absolute -top-32 -left-32 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
-                
+
                 <div className="relative z-10 p-16 flex flex-col items-start justify-center h-full max-w-xl text-white">
                     <div className="inline-flex items-center justify-center p-3 bg-white/10 backdrop-blur-md rounded-2xl mb-8 border border-white/20 shadow-xl">
                         <svg className="w-8 h-8 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
@@ -215,7 +215,7 @@ const Login = () => {
                     <div className="flex items-center space-x-4">
                         <div className="flex -space-x-4">
                             {[1, 2, 3].map((i) => (
-                                <div key={i} className={`w-10 h-10 rounded-full border-2 border-emerald-800 bg-emerald-200 flex items-center justify-center`} style={{ zIndex: 4-i }}>
+                                <div key={i} className={`w-10 h-10 rounded-full border-2 border-emerald-800 bg-emerald-200 flex items-center justify-center`} style={{ zIndex: 4 - i }}>
                                     <span className="text-xs text-emerald-800 font-bold">★</span>
                                 </div>
                             ))}
@@ -246,8 +246,8 @@ const Login = () => {
                                         onChange={handleChange}
                                         placeholder="ejemplo@gmail.com"
                                         className={`w-full px-5 py-4 bg-slate-50 border-2 rounded-xl text-slate-800 focus:bg-white focus:outline-none transition-all duration-200 placeholder-slate-400
-                                            ${errors.email || errorEmail 
-                                                ? 'border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100' 
+                                            ${errors.email || errorEmail
+                                                ? 'border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100'
                                                 : 'border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100'}`}
                                         autoComplete="email"
                                         required
@@ -271,8 +271,8 @@ const Login = () => {
                                             onChange={handleChange}
                                             placeholder="Ingresa tu contraseña"
                                             className={`w-full px-5 py-4 bg-slate-50 border-2 rounded-xl text-slate-800 focus:bg-white focus:outline-none transition-all duration-200 placeholder-slate-400 pr-12
-                                                ${errors.password || errorPassword 
-                                                    ? 'border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100' 
+                                                ${errors.password || errorPassword
+                                                    ? 'border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100'
                                                     : 'border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100'}`}
                                             required
                                         />
@@ -320,7 +320,7 @@ const Login = () => {
                             <div className="mt-8 text-center border-t border-slate-100 pt-8">
                                 <p className="text-slate-500">
                                     ¿No tienes cuenta?{' '}
-                                    <button 
+                                    <button
                                         onClick={() => { setIsPreRegister(true); setPreRegisterSuccess(''); setPreRegisterError(''); }}
                                         className="font-bold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
                                     >
@@ -361,9 +361,9 @@ const Login = () => {
                                                 onChange={handlePreRegisterChange}
                                                 placeholder={
                                                     field === 'nombreCompleto' ? 'Nombre Completo' :
-                                                    field === 'rut' ? 'RUT (ej: 12.345.678-9)' :
-                                                    field === 'email' ? 'Correo Electrónico' :
-                                                    'Teléfono'
+                                                        field === 'rut' ? 'RUT (ej: 12.345.678-9)' :
+                                                            field === 'email' ? 'Correo Electrónico' :
+                                                                'Teléfono'
                                                 }
                                                 className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl text-slate-800 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 focus:outline-none transition-all duration-200 placeholder-slate-400 text-sm"
                                                 required
@@ -426,9 +426,9 @@ const Login = () => {
                                 </div>
 
                                 <div className="flex items-center space-x-3 py-2">
-                                    <input 
-                                        type="checkbox" 
-                                        id="terminos" 
+                                    <input
+                                        type="checkbox"
+                                        id="terminos"
                                         name="aceptaTerminos"
                                         checked={preRegisterData.aceptaTerminos}
                                         onChange={handlePreRegisterChange}
@@ -457,7 +457,7 @@ const Login = () => {
                             <div className="mt-8 text-center border-t border-slate-100 pt-8">
                                 <p className="text-slate-500">
                                     ¿Ya tienes cuenta?{' '}
-                                    <button 
+                                    <button
                                         onClick={() => { setIsPreRegister(false); setPreRegisterSuccess(''); setPreRegisterError(''); }}
                                         className="font-bold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
                                     >

@@ -4,7 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { AppDataSource, connectDB } from "./config/configDB.js";
 import { routerApi } from "./routes/index.routes.js";
-import { iniciarUsuarios } from "./config/initialSetup.js";
+import { iniciarUsuarios, iniciarPlanes } from "./config/initialSetup.js";
 
 const app = express();
 app.use(cors({
@@ -22,6 +22,7 @@ connectDB()
   .then(async () => {
     // Carga usuarios iniciales
     await iniciarUsuarios();
+    await iniciarPlanes();
 
     // Carga todas las rutas de la aplicación
     routerApi(app);

@@ -38,11 +38,6 @@ export const PreRegistro = new EntitySchema({
       length: 100,
       nullable: false,
     },
-    plan: {
-      type: "varchar",
-      length: 100,
-      nullable: false,
-    },
     comprobantePagoUrl: {
       type: "varchar",
       length: 500,
@@ -67,6 +62,15 @@ export const PreRegistro = new EntitySchema({
       type: "timestamp",
       updateDate: true,
       default: () => "CURRENT_TIMESTAMP",
+    },
+  },
+  relations: {
+    plan: {
+      type: "many-to-one",
+      target: "Plan",
+      joinColumn: {
+        name: "id_plan",
+      },
     },
   },
 });
